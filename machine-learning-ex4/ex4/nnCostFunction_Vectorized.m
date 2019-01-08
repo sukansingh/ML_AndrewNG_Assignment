@@ -88,14 +88,13 @@ D2 = D2(:,2:end); % m*25
 Theta2_grad = (D3'*a2)/m; % 10*26
 Theta1_grad = (D2'*X)/m; % 25*401
 
-%Theta2_grad(:,2:end) += Theta2_grad(:,2:end) + ((Theta2(:,2:end))/m);
-%Theta1_grad(:,2:end) += ((Theta1(:,2:end))/m);
-
-
-
-
-
-
+Theta1_tmp = Theta1;
+Theta2_tmp = Theta2;
+Theta1_tmp(:, 1) = 0;
+Theta2_tmp(:, 1) = 0;
+% Regularized
+Theta2_grad += (lambda/m)*Theta2_tmp; 
+Theta1_grad += (lambda/m)*Theta1_tmp;
 
 % -------------------------------------------------------------
 

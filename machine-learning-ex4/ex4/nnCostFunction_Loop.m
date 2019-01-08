@@ -96,6 +96,13 @@ J += (lambda/(2*m))*(sum(sum(Theta1(:,2:end).^2))+sum(sum(Theta2(:,2:end).^2)));
 Theta2_grad = D2/m; % 10*26
 Theta1_grad = D1/m; % 25*401
 
+Theta1_tmp = Theta1;
+Theta2_tmp = Theta2;
+Theta1_tmp(:, 1) = 0;
+Theta2_tmp(:, 1) = 0;
+% Regularized
+Theta2_grad += (lambda/m)*Theta2_tmp; 
+Theta1_grad += (lambda/m)*Theta1_tmp;
 % =========================================================================
 
 % Unroll gradients

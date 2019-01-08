@@ -96,6 +96,14 @@ Theta2_grad = zeros(size(Theta2));
 %Theta2_grad = D2/m; % 10*26
 %Theta1_grad = D1/m; % 25*401
 
+%Theta1_tmp = Theta1;
+%Theta2_tmp = Theta2;
+%Theta1_tmp(:, 1) = 0;
+%Theta2_tmp(:, 1) = 0;
+%% Regularized
+%Theta2_grad += (lambda/m)*Theta2_tmp; 
+%Theta1_grad += (lambda/m)*Theta1_tmp;
+
 % ================================= Vectorized Implementation ========================================
 
 X = [ones(m,1) X]; % m*401
@@ -112,15 +120,22 @@ D3 = h-y; % m*10
 D2 = (D3*Theta2); % m*26
 %D2 = (D2 .* a2).*(1-a2);
 D2 = D2 .* [ones(m,1) sigmoidGradient(z2)];
-
 D2 = D2(:,2:end); % m*25
 
 Theta2_grad = (D3'*a2)/m; % 10*26
 Theta1_grad = (D2'*X)/m; % 25*401
-	
+
 J = sum(sum(((-y.*log(h)) - ((1-y).*log(1-h)))/m, 2));
 %J = sum(sum(((-y.*log(h)) - ((1-y).*log(1-h)))/m));
 J += (lambda/(2*m))*(sum(sum(Theta1(:,2:end).^2))+sum(sum(Theta2(:,2:end).^2)));
+
+Theta1_tmp = Theta1;
+Theta2_tmp = Theta2;
+Theta1_tmp(:, 1) = 0;
+Theta2_tmp(:, 1) = 0;
+% Regularized
+Theta2_grad += (lambda/m)*Theta2_tmp; 
+Theta1_grad += (lambda/m)*Theta1_tmp;
 
 
 % =========================================================================
